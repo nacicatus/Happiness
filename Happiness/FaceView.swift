@@ -8,21 +8,17 @@
 
 import UIKit
 
-
-
-
 protocol FaceViewDataSource: class {  // protocol only works with classes, not enums or structs
     func smilinessForFaceView(sender: FaceView) -> Double?
 }
 
-@IBDesignable
+@IBDesignable // to render it in storyboard
+
 class FaceView: UIView {
     
-    @IBInspectable
-    var lineWidth: CGFloat = 3.0 { didSet { setNeedsDisplay() }}
-    @IBInspectable
-    var color = UIColor.blueColor() { didSet { setNeedsDisplay() }}
-    @IBInspectable
+    var lineWidth: CGFloat = 5.0 { didSet { setNeedsDisplay() }}
+    var color = UIColor.blackColor() { didSet { setNeedsDisplay() }}
+    var faceFillColor = UIColor.yellowColor() { didSet { setNeedsDisplay() }}
     var scale: CGFloat = 0.9 { didSet { setNeedsDisplay() }}
     
     var faceCenter: CGPoint {
@@ -94,15 +90,26 @@ class FaceView: UIView {
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func drawRect(rect: CGRect) {
-        // Drawing code
+        // Draw the face
         let facePath = UIBezierPath(arcCenter: faceCenter, radius: faceRadius, startAngle: 0.0, endAngle: CGFloat(2*M_PI), clockwise: true)
         facePath.lineWidth = lineWidth
         color.set()
         facePath.stroke()
+        faceFillColor.setFill() // fill the face with yellow color
+        facePath.fill()
         
-        bezierPathForEye(.Left).stroke()
-        bezierPathForEye(.Right).stroke()
+        // Draw the eyes
+        let leftEyePath = bezierPathForEye(.Left)
+        let rightEyePath = bezierPathForEye(.Right)
         
+        color.setFill() // set the eye color
+        leftEyePath.stroke()
+        rightEyePath.stroke()
+        // make the eyes black
+        leftEyePath.fill()        
+        rightEyePath.fill()
+        
+        // Draw the smile
         let smiliness = dataSource?.smilinessForFaceView(self) ?? 0.0
         let smilePath = bezierPathForMouth(smiliness)
         smilePath.stroke()

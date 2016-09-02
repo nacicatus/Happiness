@@ -44,7 +44,7 @@ class HappinessViewController: UIViewController, FaceViewDataSource {
         // 0 is depressed, 100 is ecstatic
         didSet {
             happiness = min(max(happiness, 0), 100)
-            print("Happiness = \(happiness)")
+            // print("Happiness = \(happiness)")
             updateUI()
         }
     }
