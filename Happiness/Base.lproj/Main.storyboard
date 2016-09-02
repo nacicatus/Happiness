@@ -29,10 +29,13 @@
                             <constraint firstItem="b4o-dv-5vO" firstAttribute="top" secondItem="p4u-Xm-AUu" secondAttribute="top" id="zYT-2D-0Hc"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="faceView" destination="b4o-dv-5vO" id="TnO-sz-yPV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vEo-om-m1v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="410" y="301"/>
+            <point key="canvasLocation" x="-268" y="225"/>
         </scene>
     </scenes>
 </document>

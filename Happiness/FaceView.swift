@@ -8,10 +8,21 @@
 
 import UIKit
 
+
+
+
+protocol FaceViewDataSource: class {  // protocol only works with classes, not enums or structs
+    func smilinessForFaceView(sender: FaceView) -> Double?
+}
+
+@IBDesignable
 class FaceView: UIView {
     
+    @IBInspectable
     var lineWidth: CGFloat = 3.0 { didSet { setNeedsDisplay() }}
+    @IBInspectable
     var color = UIColor.blueColor() { didSet { setNeedsDisplay() }}
+    @IBInspectable
     var scale: CGFloat = 0.9 { didSet { setNeedsDisplay() }}
     
     var faceCenter: CGPoint {
@@ -21,6 +32,9 @@ class FaceView: UIView {
     var faceRadius: CGFloat {
         return min(bounds.size.width, bounds.size.height) / 2 * scale
     }
+    
+    
+    weak var dataSource: FaceViewDataSource?
     
     private struct Scaling {
         static let FaceRadiusToEyeRadiusRatio: CGFloat = 10
@@ -82,8 +96,8 @@ class FaceView: UIView {
         bezierPathForEye(.Left).stroke()
         bezierPathForEye(.Right).stroke()
         
-        let happiness = 0.75
-        let smilePath = bezierPathForMouth(happiness)
+        let smiliness = dataSource?.smilinessForFaceView(self) ?? 0.0
+        let smilePath = bezierPathForMouth(smiliness)
         smilePath.stroke()
         
     }
